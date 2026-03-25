@@ -1,0 +1,68 @@
+import subprocess
+import sys
+
+# ================= НАСТРОЙКИ =================
+SETTINGS_FILE = "SETTINGS.py"
+YAML_KEY_RUNNER = "CHECK_IF_CANDLE_TIME_IS_3"
+RUNNER_ON_VALUE = "true"
+
+MAIN_SCRIPTS = [
+    "BACKEND/D_FLOW/B_RELOAD_ORDER/BBA_run_1_and_change_desktop_2.py",
+    "BACKEND/D_FLOW/B_RELOAD_ORDER/BBB_run_2_and_change_desktop_3.py",
+    "BACKEND/D_FLOW/B_RELOAD_ORDER/BBC_run_3_and_change_desktop_4.py",
+    "BACKEND/D_FLOW/B_RELOAD_ORDER/BBD_run_4_and_change_desktop_1.py",
+
+    "BACKEND/D_FLOW/B_RELOAD_ORDER/tools/add_plus_1_to_ROUND_COUNTER.py",
+    "BACKEND/D_FLOW/B_RELOAD_ORDER/tools/add_plus_1_to_ALL_ROUNDS_COUNTER.py",
+
+    "BACKEND/D_FLOW/B_RELOAD_ORDER/tools/SYSTEM_XXL_DELAY_IN_SECONDS.py",
+]
+# ==============================================
+
+
+def load_settings():
+    """Читаем настройки из файла SETTINGS.py"""
+    settings = {}
+    with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
+        exec(f.read(), settings)
+    return settings
+
+
+def is_runner_on(value) -> bool:
+    """Проверка YAML_KEY_RUNNER (строка или bool)."""
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() == RUNNER_ON_VALUE.lower()
+    return False
+
+
+def run_script(script):
+    """Запускает один шаг (print или python-скрипт)"""
+    if isinstance(script, dict) and "print" in script:
+        print(script["print"])
+    elif isinstance(script, str):
+        print(f"=== RUN {script} ===")
+        subprocess.run(["python", script], check=False)
+    else:
+        print(f"[WARN] Неверный тип шага: {script}")
+
+
+def run_script_list(scripts):
+    """Выполняем список шагов по очереди"""
+    for i, script in enumerate(scripts, start=1):
+        run_script(script)
+
+
+def main():
+    """Одиночный запуск"""
+    settings = load_settings()
+    if is_runner_on(settings.get(YAML_KEY_RUNNER, "")):
+        run_script_list(MAIN_SCRIPTS)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(0)

@@ -4,24 +4,24 @@ import yaml
 import sys
 
 # ================= НАСТРОЙКИ =================
-SETTINGS_FILE = "CORE/Y_DATA/A_runners.yaml"
+SETTINGS_FILE = "BACKEND/Y_DATA/A_runners.yaml"
 YAML_KEY_RUNNER = "RUNNER_SYSTEM"
 RUNNER_ON_VALUE = "on"
 
 MAIN_SCRIPTS = [
-    "CORE/B_RESET/A_run.py",
-    # "CORE/D_FLOW/A_RELOAD_ALL/A_run.py",
-    "CORE/D_FLOW/B_RELOAD_ORDER/B_run.py",
+    "BACKEND/B_RESET/A_run.py",
+    # "BACKEND/D_FLOW/A_RELOAD_ALL/A_run.py",
+    "BACKEND/D_FLOW/B_RELOAD_ORDER/B_run.py",
 ]
 
 SCRIPTS_FINALIZATION = [
-    "CORE/G_FITALATY/G_run.py",
+    "BACKEND/G_FITALATY/G_run.py",
 ]
 # ==============================================
 
 
 def load_settings():
-    """Читаем настройки из файла settings.yaml"""
+    """Читаем настройки из файла SETTINGS.py"""
     with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
