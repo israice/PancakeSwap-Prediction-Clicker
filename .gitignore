@@ -1,4 +1,7 @@
+__pycache__/
+*.py[cod]
 .env
 test.py
 test.txt
 .claude
+test1.py
