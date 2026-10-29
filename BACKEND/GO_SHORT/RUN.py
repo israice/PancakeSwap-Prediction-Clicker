@@ -37,6 +37,8 @@ MAIN_SCRIPTS = [
     "TOOLS/pause_1s.py",
     "BACKEND/GO_SHORT/CLICK_ON_CONFIRM_IN_METAMASK.py",
     "TOOLS/pause_1s.py",
+    # -------------------------
+    "TOOLS/CONFIGS/disable_GO_SHORT.py",
 ]
 # ==============================================
 

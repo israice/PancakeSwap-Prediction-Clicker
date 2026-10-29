@@ -21,7 +21,7 @@ from pynput.keyboard import Key
 # ГЛОБАЛЬНЫЕ НАСТРОЙКИ
 # ==========================================
 
-SETTINGS_FILE = "test1.py"
+SETTINGS_FILE = "DASHBOARD.py"
 
 VARIABLES = [
     "CLICK_ENTER_UP_BUTTON",

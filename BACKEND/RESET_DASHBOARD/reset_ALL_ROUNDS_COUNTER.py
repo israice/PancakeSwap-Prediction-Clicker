@@ -9,7 +9,7 @@ import re
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))  # корень проекта
 
-FILE_PATH = "BACKEND/RESET_DASHBOARD/SETTINGS.py"
+FILE_PATH = "DASHBOARD.py"
 FILE_PATH = os.path.join(PROJECT_ROOT, FILE_PATH.replace("/", os.sep))
 KEY_NAME  = "ALL_ROUNDS_COUNTER"     # имя ключа в YAML
 NEW_VALUE = "0"             # слово для записи (будет без кавычек)

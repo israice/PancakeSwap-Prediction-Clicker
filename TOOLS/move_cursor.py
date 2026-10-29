@@ -10,14 +10,11 @@ import ctypes
 from ctypes import wintypes
 from pynput.mouse import Controller
 
-# ==============================
-SETTINGS_FILE = "test1.py"
+sys.dont_write_bytecode = True
+os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 
-if not os.path.isfile(SETTINGS_FILE):
-    _root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    _cand = os.path.join(_root, "BACKEND/F_GO_LONG/SETTINGS.py")
-    if os.path.isfile(_cand):
-        SETTINGS_FILE = _cand
+# ==============================
+SETTINGS_FILE = "DASHBOARD.py"
 
 VARIABLE_NAME = "TEST1"
 # ==============================

@@ -22,7 +22,6 @@ RUNNER_ON_VALUE = "True"
 
 MAIN_SCRIPTS = [
     {"print": "я тестовое сообщение..."},
-    "TOOLS/pause_1s.py",
     "BACKEND/COLLECT_WINNINGS/CLICK_COLLECT_BUTTON.py",
     "TOOLS/pause_1s.py",
     "TOOLS/pause_1s.py",
@@ -33,6 +32,7 @@ MAIN_SCRIPTS = [
     "TOOLS/pause_1s.py",
     "TOOLS/pause_1s.py",
     "BACKEND/COLLECT_WINNINGS/CLICK_CONFIRM_ON_METAMASK.py",
+    "TOOLS/CONFIGS/disable_COLLECT_WINNINGS.py",
     "TOOLS/pause_1s.py",
 ]
 # ==============================================

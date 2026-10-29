@@ -15,9 +15,9 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))  # корень пр
 
 MAIN_SCRIPTS: list[str | dict[str, str]] = [
     {"print": "я тестовое сообщение..."},
-    "BACKEND/RESET_DASHBOARD/AA_create_AMOUNT_IN_BNB.py",
-    "BACKEND/RESET_DASHBOARD/AB_reset_ALL_ROUNDS_COUNTER.py",
-    "BACKEND/RESET_DASHBOARD/AC_get_METAMASK_BNB_BALANCE.py",
+    "BACKEND/RESET_DASHBOARD/create_AMOUNT_IN_BNB.py",
+    "BACKEND/RESET_DASHBOARD/reset_ALL_ROUNDS_COUNTER.py",
+    "BACKEND/INSERT_AMOUNT/get_METAMASK_BNB_BALANCE.py",
 ]
 # ==============================================
 

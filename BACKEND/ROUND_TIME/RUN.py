@@ -21,8 +21,10 @@ RUNNER_ON_VALUE = "True"
 
 MAIN_SCRIPTS = [
     {"print": "я тестовое сообщение..."},
-    "BACKEND/ROUND_TIME/get_TIME_LEFT.py",
     "BACKEND/ROUND_TIME/plus_1m_to_TIME_LEFT.py",
+    "BACKEND/ROUND_TIME/TIME_LEFT_BACK_COUNTER.py",
+    "BACKEND/ROUND_TIME/get_TIME_LEFT.py",
+    "BACKEND/ROUND_TIME/minus_1m_to_TIME_LEFT.py",
     "BACKEND/ROUND_TIME/TIME_LEFT_BACK_COUNTER.py",
 ]
 # ==============================================
