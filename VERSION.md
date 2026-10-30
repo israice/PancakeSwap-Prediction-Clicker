@@ -16,7 +16,7 @@ python run.py
 
 # UPDATE
 git add .
-git commit -m "v0.0.5 - обновлен README.md"
+git commit -m "v0.0.6 - настроенно на laptopmini"
 git push
 
 
@@ -26,3 +26,4 @@ v0.0.2 - добавлен setup для каждой из папок
 v0.0.3 - добавлена и проверенна автоматизация
 v0.0.4 - полностью проверенная автоматизация, сахранение перед переносом на laptopmini
 v0.0.5 - обновлен README.md
+v0.0.6 - настроенно на laptopmini

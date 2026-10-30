@@ -22,6 +22,7 @@ RUNNER_ON_VALUE = "True"
 
 MAIN_SCRIPTS = [
     {"print": "я тестовое сообщение..."},
+    "TOOLS/pause_1s.py",
     "BACKEND/CHECK_WINNINGS/MOVE_TO_CHECK_COLLECT_BUTTON.py",
     "TOOLS/pause_1s.py",
     "BACKEND/CHECK_WINNINGS/WINNING_COLOR_NOW.py",
