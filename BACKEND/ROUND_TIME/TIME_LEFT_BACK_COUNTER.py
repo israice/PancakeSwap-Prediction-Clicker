@@ -8,7 +8,7 @@ from pathlib import Path
 # ==================== НАСТРОЙКИ ====================
 
 DASHBOARD_PATH = "DASHBOARD.py"
-UPDATE_INTERVAL = 1.0
+UPDATE_INTERVAL = 1.00
 
 # ==================== ОТКЛЮЧЕНИЕ BYTECODE ====================
 

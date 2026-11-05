@@ -4,4 +4,4 @@ ruamel.yaml
 selenium
 pyyaml
 pyautogui
-pynput
+pyvda

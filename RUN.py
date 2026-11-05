@@ -11,19 +11,15 @@ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 BASE_DIR = Path(__file__).resolve().parent
 
 startup_scripts = [
+    "BACKEND/ROUND_TIME/get_TIME_LEFT.py",
     "TOOLS/CONFIGS/disable_COLLECT_WINNINGS.py",
     "TOOLS/CONFIGS/disable_GO_LONG.py",
     "TOOLS/CONFIGS/disable_GO_SHORT.py",
 ]
 
 loop_scripts = [
-    "BACKEND/ROUND_TIME/RUN.py",
-    "BACKEND/INSERT_AMOUNT/RUN.py",
-    "BACKEND/CHOOSE_TREND/RUN.py",
-    "BACKEND/GO_LONG/RUN.py",
-    "BACKEND/GO_SHORT/RUN.py",
-    "BACKEND/CHECK_WINNINGS/RUN.py",
-    "BACKEND/COLLECT_WINNINGS/RUN.py",
+    {"print": "я multi desktop..."},
+    "Z_TEST/A_run.py",
 ]
 
 shutdown_scripts = [
@@ -70,7 +66,18 @@ def run_script(script_path):
     if force_stop:
         return
 
-    path = BASE_DIR / script_path
+    # Записи-сообщения вида {"print": "текст"} просто выводятся и пропускаются
+    if isinstance(script_path, dict):
+        message = script_path.get("print")
+        if message:
+            print(message, flush=True)
+        return
+
+    # Универсально принимаем и строки, и объекты Path
+    if isinstance(script_path, Path):
+        script_path = str(script_path)
+
+    path = BASE_DIR / Path(script_path)
 
     if not path.is_file():
         print(f"❌ Файл не найден: {path}", flush=True)
@@ -100,9 +107,7 @@ def run_script(script_path):
         current_process = None
 
         if return_code != 0:
-            print(
-                flush=True,
-            )
+            print(f"⚠️ Скрипт завершился с кодом {return_code}: {script_path}", flush=True)
 
     except Exception as error:
         current_process = None

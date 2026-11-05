@@ -27,8 +27,6 @@ MAIN_SCRIPTS = [
     "TOOLS/pause_1s.py",
     "BACKEND/GO_SHORT/INSERT_AMOUNT_IN_BNB.py",
     "TOOLS/pause_1s.py",
-    "TOOLS/pause_1s.py",
-    "TOOLS/pause_1s.py",
     "BACKEND/GO_SHORT/CLICK_ON_CONFIRM_IN_WEBSITE.py",
     "TOOLS/pause_1s.py",
     "TOOLS/pause_1s.py",

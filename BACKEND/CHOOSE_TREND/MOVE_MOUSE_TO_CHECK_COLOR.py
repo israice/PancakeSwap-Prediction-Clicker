@@ -1,23 +1,72 @@
+# click_point.py
+# Читает: PIXEL_POINT: x,y,monitor=N
+# Конвертирует локальные координаты монитора в глобальные
+# и перемещает курсор без клика.
 
+import sys
 import os
-import re
+import platform
 import ctypes
 from ctypes import wintypes
+from pynput.mouse import Controller
+# Консоль Windows по умолчанию cp1252/cp866 -> принудительно UTF-8,
+# иначе русский текст вызовет UnicodeEncodeError.
+for _stream in (sys.stdout, sys.stderr):
+    _reconfigure = getattr(_stream, "reconfigure", None)
+    if callable(_reconfigure):
+        try:
+            _reconfigure(encoding="utf-8", errors="replace")
+        except OSError:
+            pass
 
+
+# ==============================
 SETTINGS_FILE = "DASHBOARD.py"
+
+if not os.path.isfile(SETTINGS_FILE):
+    # если запустили НЕ из корня проекта - ищем DASHBOARD.py вверх по каталогам
+    _dir = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
+    while _dir and not os.path.isfile(_dir + "/DASHBOARD.py"):
+        _parent = os.path.dirname(_dir)
+        if _parent == _dir:
+            _dir = ""
+            break
+        _dir = _parent
+    if _dir:
+        SETTINGS_FILE = _dir + "/DASHBOARD.py"
+
 VARIABLE_NAME = "MOVE_MOUSE_TO_CHECK_COLOR"
+# ==============================
 
-user32 = ctypes.WinDLL("user32", use_last_error=True)
+mouse = Controller()
 
-try:
-    user32.SetProcessDpiAwarenessContext(ctypes.c_void_p(-4))
-except Exception:
+
+# ---- DPI awareness ----
+def _make_dpi_aware():
+    if platform.system() != "Windows":
+        return
+
     try:
-        ctypes.WinDLL("shcore").SetProcessDpiAwareness(2)
-    except Exception:
+        user32 = ctypes.windll.user32
+        try:
+            user32.SetProcessDpiAwarenessContext(ctypes.c_void_p(-4))
+            return
+        except Exception:
+            pass
+
+        try:
+            shcore = ctypes.windll.shcore
+            shcore.SetProcessDpiAwareness(2)
+            return
+        except Exception:
+            pass
+
         user32.SetProcessDPIAware()
+    except Exception:
+        pass
 
 
+# ---- WinAPI типы/функции ----
 class RECT(ctypes.Structure):
     _fields_ = [
         ("left", wintypes.LONG),
@@ -36,53 +85,140 @@ class MONITORINFO(ctypes.Structure):
     ]
 
 
-def main():
-    path = SETTINGS_FILE
+user32 = ctypes.windll.user32
 
-    if not os.path.isfile(path):
-        path = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            SETTINGS_FILE
-        )
+user32.GetMonitorInfoW.argtypes = [
+    wintypes.HMONITOR,
+    ctypes.POINTER(MONITORINFO),
+]
+user32.GetMonitorInfoW.restype = wintypes.BOOL
 
-    with open(path, encoding="utf-8") as f:
-        for line in f:
-            m = re.match(
-                rf'^\s*{VARIABLE_NAME}\s*[:=]\s*["\']?(\d+)\s*,\s*(\d+)(?:\s*,\s*monitor=(\d+))?',
-                line
-            )
-            if m:
-                x, y = int(m.group(1)), int(m.group(2))
-                monitor_id = int(m.group(3) or 1)
-                break
-        else:
-            return
+MonitorEnumProc = ctypes.WINFUNCTYPE(
+    wintypes.BOOL,
+    wintypes.HMONITOR,
+    wintypes.HDC,
+    ctypes.POINTER(RECT),
+    wintypes.LPARAM,
+)
 
+user32.EnumDisplayMonitors.argtypes = [
+    wintypes.HDC,
+    ctypes.c_void_p,
+    MonitorEnumProc,
+    wintypes.LPARAM,
+]
+user32.EnumDisplayMonitors.restype = wintypes.BOOL
+
+
+def _enum_monitors():
     monitors = []
 
-    CALLBACK = ctypes.WINFUNCTYPE(
-        wintypes.BOOL, wintypes.HMONITOR, wintypes.HDC,
-        ctypes.POINTER(RECT), wintypes.LPARAM
-    )
+    def _cb(hmon, hdc, lprc, lparam):
+        mi = MONITORINFO()
+        mi.cbSize = ctypes.sizeof(MONITORINFO)
 
-    def enum_callback(handle, dc, rect, data):
-        info = MONITORINFO()
-        info.cbSize = ctypes.sizeof(info)
-        if user32.GetMonitorInfoW(handle, ctypes.byref(info)):
-            r = info.rcMonitor
-            monitors.append((r.left, r.top, r.right - r.left, r.bottom - r.top,
-                             bool(info.dwFlags & 1)))
+        if user32.GetMonitorInfoW(hmon, ctypes.byref(mi)):
+            monitors.append({
+                "handle": hmon,
+                "x": mi.rcMonitor.left,
+                "y": mi.rcMonitor.top,
+                "w": mi.rcMonitor.right - mi.rcMonitor.left,
+                "h": mi.rcMonitor.bottom - mi.rcMonitor.top,
+            })
+
         return True
 
-    callback = CALLBACK(enum_callback)
-    user32.EnumDisplayMonitors(None, None, callback, 0)
+    cb = MonitorEnumProc(_cb)
+    user32.EnumDisplayMonitors(0, None, cb, 0)
+    return monitors
 
-    monitors.sort(key=lambda m: not m[4])
 
-    if 1 <= monitor_id <= len(monitors):
-        mx, my, mw, mh, _ = monitors[monitor_id - 1]
-        if 0 <= x < mw and 0 <= y < mh:
-            user32.SetCursorPos(mx + x, my + y)
+# ---- Парсинг SETTINGS.py ----
+import re
+
+
+def _parse_var_line(line, var_name):
+    stripped = line.strip()
+
+    m = re.match(
+        rf"^{re.escape(var_name)}\s*[:=]\s*(.+)$",
+        stripped,
+    )
+
+    if not m:
+        return None
+
+    payload = m.group(1).strip().strip(",").strip('"').strip("'")
+    parts = [p.strip() for p in payload.split(",")]
+
+    if len(parts) < 2:
+        return None
+
+    try:
+        x_local = int(parts[0])
+        y_local = int(parts[1])
+    except ValueError:
+        return None
+
+    monitor_id = None
+
+    for p in parts[2:]:
+        if p.startswith("monitor="):
+            try:
+                monitor_id = int(p.split("=", 1)[1])
+            except ValueError:
+                pass
+
+    return x_local, y_local, monitor_id
+
+
+def _load_coordinates(var_name):
+    with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
+        for raw in f:
+            parsed = _parse_var_line(raw, var_name)
+            if parsed:
+                return parsed
+
+    raise ValueError(
+        f"Переменная {var_name} не найдена в {SETTINGS_FILE}"
+    )
+
+
+def _local_to_global(x_local, y_local, monitor_id, monitors):
+    # Нумерация мониторов начинается с 1.
+    if monitor_id is not None and 1 <= monitor_id <= len(monitors):
+        target = monitors[monitor_id - 1]
+    else:
+        target = monitors[0] if monitors else {"x": 0, "y": 0}
+
+    gx = int(target["x"] + x_local)
+    gy = int(target["y"] + y_local)
+
+    return gx, gy
+
+
+def main():
+    _make_dpi_aware()
+
+    var_name = VARIABLE_NAME
+
+    if len(sys.argv) >= 2 and sys.argv[1].strip():
+        var_name = sys.argv[1].strip()
+
+    x_local, y_local, monitor_id = _load_coordinates(var_name)
+
+    monitors = _enum_monitors()
+    gx, gy = _local_to_global(
+        x_local,
+        y_local,
+        monitor_id,
+        monitors,
+    )
+
+    # Только перемещение курсора — без клика.
+    mouse.position = (gx, gy)
+
+    print(f"Курсор перемещён в ({gx}, {gy}), monitor={monitor_id}")
 
 
 if __name__ == "__main__":

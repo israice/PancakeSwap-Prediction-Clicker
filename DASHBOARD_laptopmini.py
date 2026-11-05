@@ -1,12 +1,12 @@
-WALLET = 10.34
+START_WALLET = 10.34
 START_DATE = "30.10.2026"
-TEST = "687,712,monitor=1"
+TEST = "996,516,monitor=1"
 TEST_COLOR = "#003300"
 # ##################################
 CHECK_WINNINGS = "True"
 MOVE_TO_CHECK_COLLECT_BUTTON = "905,466,monitor=1"
 WINNING_NEEDED_COLOR = "#228F99"
-WINNING_COLOR_NOW = "#363636"
+WINNING_COLOR_NOW = "#27262C"
 # ##################################
 COLLECT_WINNINGS = "False"
 CLICK_COLLECT_BUTTON = "905,466,monitor=1"
@@ -14,13 +14,13 @@ CLICK_CONFIRM_ON_WEBSITE = "486,549,monitor=1"
 CLICK_CONFIRM_ON_METAMASK = "1282,648,monitor=1"
 # ##################################
 ROUND_TIME = "True"
-TIME_LEFT = 2.57
+TIME_LEFT = 1.25
 # ##################################
 CHOOSE_TREND = "True"
-TREND_NEEDED_UP_COLOR = "#003300"
+TREND_NEEDED_UP_COLOR = "#375837"
 CLICLK_TO_OPEN_TRADINGVIEW = "700,710,monitor=1"
-MOVE_MOUSE_TO_CHECK_COLOR = "687,712,monitor=1"
-GET_TREND_COLOR = "#003300"
+MOVE_MOUSE_TO_CHECK_COLOR = "1002,310,monitor=1"
+GET_TREND_COLOR = "#583737"
 CLICLK_TO_CLOSE_TRADINGVIEW = "700,710,monitor=1"
 NEXT_TREND = "DOWN"
 # ##################################

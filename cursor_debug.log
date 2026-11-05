@@ -1,0 +1,44 @@
+01:27:52  ==================================================
+01:27:52  Скрипт: D:\0_PROJECTS\PancakeSwap-Prediction-Clicker\test.py
+01:27:52  Файл настроек: D:\0_PROJECTS\PancakeSwap-Prediction-Clicker\DASHBOARD.py
+01:27:52  Найдена строка настроек: 'MOVE_MOUSE_TO_CHECK_COLOR = "851,705,monitor=1"'
+01:27:52  Разобрано: x=851, y=705, monitor=1
+01:27:52  Монитор 1: left=0 top=0 1366x768 (основной)
+01:27:52  Глобальные координаты: (851, 705)
+01:27:52  Курсор до движения: (613, 250), цель: (851, 705)
+01:27:54  Курсор после SetCursorPos: (851, 705)
+01:27:54  Цвет пикселя (851, 705): #FAFAFA
+01:27:54  Записано в DASHBOARD.py: GET_TREND_COLOR = "#FAFAFA"
+01:28:30  ==================================================
+01:28:30  Скрипт: D:\0_PROJECTS\PancakeSwap-Prediction-Clicker\test.py
+01:28:30  Файл настроек: D:\0_PROJECTS\PancakeSwap-Prediction-Clicker\DASHBOARD.py
+01:28:30  Найдена строка настроек: 'MOVE_MOUSE_TO_CHECK_COLOR = "851,705,monitor=1"'
+01:28:30  Разобрано: x=851, y=705, monitor=1
+01:28:30  Монитор 1: left=0 top=0 1366x768 (основной)
+01:28:30  Глобальные координаты: (851, 705)
+01:28:30  Курсор до движения: (838, 456), цель: (851, 705)
+01:28:31  Курсор после SetCursorPos: (851, 705)
+01:28:32  Цвет пикселя (851, 705): #FAFAFA
+01:28:32  Записано в DASHBOARD.py: GET_TREND_COLOR = "#FAFAFA"
+01:30:11  ==================================================
+01:30:11  Скрипт: D:\0_PROJECTS\PancakeSwap-Prediction-Clicker\test.py
+01:30:11  Файл настроек: D:\0_PROJECTS\PancakeSwap-Prediction-Clicker\DASHBOARD.py
+01:30:11  Найдена строка настроек: 'MOVE_MOUSE_TO_CHECK_COLOR = "822,379,monitor=1"'
+01:30:11  Разобрано: x=822, y=379, monitor=1
+01:30:11  Монитор 1: left=0 top=0 1366x768 (основной)
+01:30:11  Глобальные координаты: (822, 379)
+01:30:11  Курсор до движения: (619, 563), цель: (822, 379)
+01:30:12  Курсор после SetCursorPos: (822, 379)
+01:30:13  Цвет пикселя (822, 379): #1F1F1F
+01:30:13  Записано в DASHBOARD.py: GET_TREND_COLOR = "#1F1F1F"
+01:37:45  ==================================================
+01:37:45  Скрипт: D:\0_PROJECTS\PancakeSwap-Prediction-Clicker\test.py
+01:37:45  Файл настроек: D:\0_PROJECTS\PancakeSwap-Prediction-Clicker\DASHBOARD.py
+01:37:45  Найдена строка настроек: 'MOVE_MOUSE_TO_CHECK_COLOR = "822,379,monitor=1"'
+01:37:45  Разобрано: x=822, y=379, monitor=1
+01:37:45  Монитор 1: left=0 top=0 1366x768 (основной)
+01:37:45  Глобальные координаты: (822, 379)
+01:37:45  Курсор до движения: (549, 313), цель: (822, 379)
+01:37:47  Курсор после SetCursorPos: (822, 379)
+01:37:47  Цвет пикселя (822, 379): #1F1F1F
+01:37:47  Записано в DASHBOARD.py: GET_TREND_COLOR = "#1F1F1F"

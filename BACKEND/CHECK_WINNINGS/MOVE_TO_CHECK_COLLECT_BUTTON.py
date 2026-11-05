@@ -8,16 +8,32 @@ import os
 import platform
 import ctypes
 from ctypes import wintypes
-from pynput.mouse import Controller
+from pynput.mouse import Controller
+# Консоль Windows по умолчанию cp1252/cp866 -> принудительно UTF-8,
+# иначе русский текст вызовет UnicodeEncodeError.
+for _stream in (sys.stdout, sys.stderr):
+    _reconfigure = getattr(_stream, "reconfigure", None)
+    if callable(_reconfigure):
+        try:
+            _reconfigure(encoding="utf-8", errors="replace")
+        except OSError:
+            pass
+
 
 # ==============================
 SETTINGS_FILE = "DASHBOARD.py"
 
 if not os.path.isfile(SETTINGS_FILE):
-    _root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    _cand = os.path.join(_root, "DASHBOARD.py")
-    if os.path.isfile(_cand):
-        SETTINGS_FILE = _cand
+    # если запустили НЕ из корня проекта - ищем DASHBOARD.py вверх по каталогам
+    _dir = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
+    while _dir and not os.path.isfile(_dir + "/DASHBOARD.py"):
+        _parent = os.path.dirname(_dir)
+        if _parent == _dir:
+            _dir = ""
+            break
+        _dir = _parent
+    if _dir:
+        SETTINGS_FILE = _dir + "/DASHBOARD.py"
 
 VARIABLE_NAME = "CLICK_COLLECT_BUTTON"
 # ==============================
